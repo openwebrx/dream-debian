@@ -4,15 +4,15 @@ Section: hamradio
 Priority: optional
 Rules-Requires-Root: no
 Standards-Version: 4.2.0
-Build-Depends: debhelper (>= 11)
+Build-Depends: debhelper (>= 11), qt5-qmake, qtbase5-dev, libpulse-dev, libfftw3-dev
 Homepage: https://sourceforge.net/projects/drm/
 Vcs-Browser: https://sourceforge.net/p/drm/code/HEAD/tree/
-Vcs-Svn: https://svn.code.sf.net/p/drm/code/ drm-code
+Vcs-Svn: https://svn.code.sf.net/p/drm/code/
 
-Package: dream-headless:
+Package: dream-headless
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: A software radio for AM and Digital Radio Mondiale (DRM)
+Description: Software radio for AM and Digital Radio Mondiale (DRM)
  Dream is a software implementation of a Digital Radio Mondiale (DRM)
  receiver. With Dream, DRM broadcasts can be received with a modified
  analog receiver (SW, MW, LW) and a PC with a sound card.
