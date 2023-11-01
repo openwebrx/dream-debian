@@ -1,0 +1,79 @@
+Description: Fix qmake library detection
+Author: Jakob Ketterl <jakob.ketterl@gmx.de>
+
+* This patch replaces all uses of $$OUT_PWD with a fixed prefix of "/usr".
+  When building packages, OUT_PWD would be set to a temporary path inside the
+  build output directory, so no libraries would be find there. This solution
+  is probably not the best, but since our build environment should be somewhat
+  stable regarding library locations, it should do for this purpose.
+--- a/dream.pro
++++ b/dream.pro
+@@ -4,7 +4,7 @@
+ OBJECTS_DIR = obj
+ DEFINES += EXECUTABLE_NAME=$$TARGET
+ LIBS += -L$$OUT_PWD/lib
+-INCLUDEPATH += $$OUT_PWD/include
++INCLUDEPATH += /usr/include
+ contains(QT_VERSION, ^4\\..*) {
+     CONFIG += qt qt4
+     VERSION_MESSAGE = Qt 4
+@@ -184,26 +184,26 @@
+ win32 {
+     LIBS += -lfftw3-3
+     !multimedia {
+-        exists($$OUT_PWD/include/portaudio.h) {
++        exists(/usr/include/portaudio.h) {
+           CONFIG += portaudio sound
+         }
+         else {
+           CONFIG += mmsystem sound
+         }
+     }
+-    exists($$OUT_PWD/include/speex/speex_preprocess.h) {
++    exists(/usr/include/speex/speex_preprocess.h) {
+       CONFIG += speexdsp
+     }
+-    exists($$OUT_PWD/include/hamlib/rig.h) {
++    exists(/usr/include/hamlib/rig.h) {
+       CONFIG += hamlib
+     }
+-    exists($$OUT_PWD/include/pcap.h) {
++    exists(/usr/include/pcap.h) {
+       CONFIG += pcap
+     }
+-    exists($$OUT_PWD/include/sndfile.h) {
++    exists(/usr/include/sndfile.h) {
+         CONFIG += sndfile
+     }
+-    exists($$OUT_PWD/include/opus/opus.h) {
++    exists(/usr/include/opus/opus.h) {
+         CONFIG += opus
+     }
+     LIBS += -lsetupapi -lwsock32 -lws2_32 -lzdll -ladvapi32 -luser32
+@@ -225,13 +225,13 @@
+          LIBS += -lz
+     }
+ }
+-exists($$OUT_PWD/include/neaacdec.h) {
++exists(/usr/include/neaacdec.h) {
+      DEFINES += HAVE_LIBFAAD \
+      USE_FAAD2_LIBRARY
+      LIBS += -lfaad_drm
+      message("with FAAD2")
+ }
+-exists($$OUT_PWD/include/faac.h) {
++exists(/usr/include/faac.h) {
+      DEFINES += HAVE_LIBFAAC \
+      USE_FAAC_LIBRARY
+      LIBS += -lfaac_drm
+@@ -327,8 +327,8 @@
+             }
+         }
+     }
+-    exists($$OUT_PWD/include/qwt/qwt.h) {
+-        INCLUDEPATH += $$OUT_PWD/include/qwt
++    exists(/usr/include/qwt/qwt.h) {
++        INCLUDEPATH += /usr/include/qwt
+     }
+ }
+ alsa {
